@@ -12,13 +12,13 @@ using System.Threading.Tasks;
 
 namespace NBitcoin.Altcoins
 {
-	public class BCash : NetworkSetBase
+	public class BitcoinCash : NetworkSetBase
 	{
-		public static BCash Instance { get; } = new BCash();
+		public static BitcoinCash Instance { get; } = new BitcoinCash();
 
 		public override string CryptoCode => "BCH";
 
-		private BCash()
+		private BitcoinCash()
 		{
 
 		}
@@ -162,13 +162,13 @@ namespace NBitcoin.Altcoins
 		Tuple.Create(new byte[]{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xff,0xff,0xda,0xf4,0x92,0x6f}, 18333)
 };
 
-		class BCashConsensusFactory : ConsensusFactory
+		class BitcoinCashConsensusFactory : ConsensusFactory
 		{
-			private BCashConsensusFactory()
+			private BitcoinCashConsensusFactory()
 			{
 
 			}
-			public static BCashConsensusFactory Instance { get; } = new BCashConsensusFactory();
+			public static BitcoinCashConsensusFactory Instance { get; } = new BitcoinCashConsensusFactory();
 
 			public override ProtocolCapabilities GetProtocolCapabilities(uint protocolVersion)
 			{
@@ -183,10 +183,10 @@ namespace NBitcoin.Altcoins
 			}
 		}
 
-		public class BTrashPubKeyAddress : BitcoinPubKeyAddress
+		public class BitcoinCashPubKeyAddress : BitcoinPubKeyAddress
 		{
-			BCashAddr.BchAddr.BchAddrData addr;
-			internal BTrashPubKeyAddress(string str, BCashAddr.BchAddr.BchAddrData addr) : base(str, new KeyId(addr.Hash), addr.Network)
+			BitcoinCashAddr.BchAddr.BchAddrData addr;
+			internal BitcoinCashPubKeyAddress(string str, BitcoinCashAddr.BchAddr.BchAddrData addr) : base(str, new KeyId(addr.Hash), addr.Network)
 			{
 				this.addr = addr;
 			}
@@ -202,10 +202,10 @@ namespace NBitcoin.Altcoins
 			}
 		}
 
-		public class BTrashScriptAddress : BitcoinScriptAddress
+		public class BitcoinCashScriptAddress : BitcoinScriptAddress
 		{
-			BCashAddr.BchAddr.BchAddrData addr;
-			internal BTrashScriptAddress(string str, BCashAddr.BchAddr.BchAddrData addr) : base(str, new ScriptId(addr.Hash), addr.Network)
+			BitcoinCashAddr.BchAddr.BchAddrData addr;
+			internal BitcoinCashScriptAddress(string str, BitcoinCashAddr.BchAddr.BchAddrData addr) : base(str, new ScriptId(addr.Hash), addr.Network)
 			{
 				this.addr = addr;
 			}
@@ -216,10 +216,10 @@ namespace NBitcoin.Altcoins
 			}
 		}
 
-		class BCashStringParser : NetworkStringParser
+		class BitcoinCashStringParser : NetworkStringParser
 		{
 			string _Prefix;
-			public BCashStringParser(string prefix)
+			public BitcoinCashStringParser(string prefix)
 			{
 				_Prefix = prefix;
 			}
@@ -232,15 +232,15 @@ namespace NBitcoin.Altcoins
 				{
 					try
 					{
-						var addr = BCashAddr.BchAddr.DecodeAddress(str, prefix, network);
-						if (addr.Type == BCashAddr.BchAddr.CashType.P2PKH && targetType.GetTypeInfo().IsAssignableFrom(typeof(BTrashPubKeyAddress).GetTypeInfo()))
+						var addr = BitcoinCashAddr.BchAddr.DecodeAddress(str, prefix, network);
+						if (addr.Type == BitcoinCashAddr.BchAddr.CashType.P2PKH && targetType.GetTypeInfo().IsAssignableFrom(typeof(BitcoinCashPubKeyAddress).GetTypeInfo()))
 						{
-							result = new BTrashPubKeyAddress(str, addr);
+							result = new BitcoinCashPubKeyAddress(str, addr);
 							return true;
 						}
-						else if (addr.Type == BCashAddr.BchAddr.CashType.P2SH && targetType.GetTypeInfo().IsAssignableFrom(typeof(BTrashScriptAddress).GetTypeInfo()))
+						else if (addr.Type == BitcoinCashAddr.BchAddr.CashType.P2SH && targetType.GetTypeInfo().IsAssignableFrom(typeof(BitcoinCashScriptAddress).GetTypeInfo()))
 						{
-							result = new BTrashScriptAddress(str, addr);
+							result = new BitcoinCashScriptAddress(str, addr);
 							return true;
 						}
 					}
@@ -251,29 +251,29 @@ namespace NBitcoin.Altcoins
 
 			public override BitcoinPubKeyAddress CreateP2PKH(KeyId keyId, Network network)
 			{
-				var addr = new BCashAddr.BchAddr.BchAddrData()
+				var addr = new BitcoinCashAddr.BchAddr.BchAddrData()
 				{
-					Format = BCashAddr.BchAddr.CashFormat.Cashaddr,
+					Format = BitcoinCashAddr.BchAddr.CashFormat.Cashaddr,
 					Prefix = _Prefix,
 					Hash = keyId.ToBytes(true),
-					Type = BCashAddr.BchAddr.CashType.P2PKH,
+					Type = BitcoinCashAddr.BchAddr.CashType.P2PKH,
 					Network = network
 				};
-				var str = BCashAddr.BchAddr.EncodeAsCashaddr(addr);
-				return new BTrashPubKeyAddress(str, addr);
+				var str = BitcoinCashAddr.BchAddr.EncodeAsCashaddr(addr);
+				return new BitcoinCashPubKeyAddress(str, addr);
 			}
 			public override BitcoinScriptAddress CreateP2SH(ScriptId scriptId, Network network)
 			{
-				var addr = new BCashAddr.BchAddr.BchAddrData()
+				var addr = new BitcoinCashAddr.BchAddr.BchAddrData()
 				{
-					Format = BCashAddr.BchAddr.CashFormat.Cashaddr,
+					Format = BitcoinCashAddr.BchAddr.CashFormat.Cashaddr,
 					Prefix = _Prefix,
 					Hash = scriptId.ToBytes(true),
-					Type = BCashAddr.BchAddr.CashType.P2SH,
+					Type = BitcoinCashAddr.BchAddr.CashType.P2SH,
 					Network = network
 				};
-				var str = BCashAddr.BchAddr.EncodeAsCashaddr(addr);
-				return new BTrashScriptAddress(str, addr);
+				var str = BitcoinCashAddr.BchAddr.EncodeAsCashaddr(addr);
+				return new BitcoinCashScriptAddress(str, addr);
 			}
 		}
 
@@ -301,7 +301,7 @@ namespace NBitcoin.Altcoins
 				MinerConfirmationWindow = 2016,
 				CoinbaseMaturity = 100,
 				MinimumChainWork = new uint256("0000000000000000000000000000000000000000007e5dbf54c7f6b58a6853cd"),
-				ConsensusFactory = BCashConsensusFactory.Instance,
+				ConsensusFactory = BitcoinCashConsensusFactory.Instance,
 				SupportSegwit = false,
 				NeverNeedPreviousTxForSigning = true
 			})
@@ -317,11 +317,11 @@ namespace NBitcoin.Altcoins
 			.SetMagic(0xe8f3e1e3)
 			.SetPort(8333)
 			.SetRPCPort(8332)
-			.SetNetworkStringParser(new BCashStringParser("bitcoincash"))
+			.SetNetworkStringParser(new BitcoinCashStringParser("bitcoincash"))
 			.SetName("bch-main")
 			.AddAlias("bch-mainnet")
-			.AddAlias("bcash-mainnet")
-			.AddAlias("bcash-main")
+			.AddAlias("bitcoincash-mainnet")
+			.AddAlias("bitcoincash-main")
 			.AddDNSSeeds(new[]
 			{
 				new DNSSeedData("bitcoinabc.org", "seed.bitcoinabc.org"),
@@ -354,7 +354,7 @@ namespace NBitcoin.Altcoins
 				MinerConfirmationWindow = 2016,
 				CoinbaseMaturity = 100,
 				MinimumChainWork = new uint256("00000000000000000000000000000000000000000000002888c34d61b53a244a"),
-				ConsensusFactory = BCashConsensusFactory.Instance,
+				ConsensusFactory = BitcoinCashConsensusFactory.Instance,
 				SupportSegwit = false
 			})
 			.SetBase58Bytes(Base58Type.PUBKEY_ADDRESS, new byte[] { 111 })
@@ -367,11 +367,11 @@ namespace NBitcoin.Altcoins
 			.SetMagic(0xf4f3e5f4)
 			.SetPort(18333)
 			.SetRPCPort(18332)
-			.SetNetworkStringParser(new BCashStringParser("bchtest"))
+			.SetNetworkStringParser(new BitcoinCashStringParser("bchtest"))
 			.SetName("bch-test")
 			.AddAlias("bch-testnet")
-			.AddAlias("bcash-test")
-			.AddAlias("bcash-testnet")
+			.AddAlias("bitcoincash-test")
+			.AddAlias("bitcoincash-testnet")
 			.AddDNSSeeds(new[]
 			{
 				new DNSSeedData("bitcoinabc.org", "testnet-seed.bitcoinabc.org"),
@@ -404,7 +404,7 @@ namespace NBitcoin.Altcoins
 				RuleChangeActivationThreshold = 108,
 				MinerConfirmationWindow = 144,
 				CoinbaseMaturity = 100,
-				ConsensusFactory = BCashConsensusFactory.Instance,
+				ConsensusFactory = BitcoinCashConsensusFactory.Instance,
 				SupportSegwit = false
 			})
 			.SetBase58Bytes(Base58Type.PUBKEY_ADDRESS, new byte[] { 111 })
@@ -417,11 +417,11 @@ namespace NBitcoin.Altcoins
 			.SetMagic(0xfabfb5da)
 			.SetPort(18444)
 			.SetRPCPort(18443)
-			.SetNetworkStringParser(new BCashStringParser("bchreg"))
+			.SetNetworkStringParser(new BitcoinCashStringParser("bchreg"))
 			.SetName("bch-reg")
 			.AddAlias("bch-regtest")
-			.AddAlias("bcash-reg")
-			.AddAlias("bcash-regtest")
+			.AddAlias("bitcoincash-reg")
+			.AddAlias("bitcoincash-regtest")
 			.SetGenesis("0100000000000000000000000000000000000000000000000000000000000000000000003ba3edfd7a7b12b27ac72c3e67768f617fc81bc3888a51323a9fb8aa4b1e5e4adae5494dffff7f20020000000101000000010000000000000000000000000000000000000000000000000000000000000000ffffffff4d04ffff001d0104455468652054696d65732030332f4a616e2f32303039204368616e63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062616e6b73ffffffff0100f2052a01000000434104678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5fac00000000");
 			return builder;
 		}
@@ -431,7 +431,7 @@ namespace NBitcoin.Altcoins
 
 
 
-namespace BCashAddr
+namespace BitcoinCashAddr
 {
 	// https://github.com/bitcoincashjs/bchaddrjs
 	internal static class BchAddr

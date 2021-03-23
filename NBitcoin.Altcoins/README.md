@@ -3,8 +3,8 @@
 Currently supported altcoins are:
 
 * Argoneum
-* BCash
-* BGold
+* BitcoinCash
+* BitcoinGold
 * BitCore
 * Dash
 * Dogecoin

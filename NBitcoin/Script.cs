@@ -118,7 +118,7 @@ namespace NBitcoin
 		WitnessPubkeyType = (1U << 15),
 
 		/// <summary>
-		/// Some altcoins like BCash and BGold requires ForkId inside the sigHash
+		/// Some altcoins like BitcoinCash and BitcoinGold requires ForkId inside the sigHash
 		/// </summary>
 		ForkId = (1U << 29),
 
